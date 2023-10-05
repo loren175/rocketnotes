@@ -1,33 +1,54 @@
+import { FiPlus, FiSearch } from "react-icons/fi"
 import { Container, Brand, Menu, Search, Content, NewNote } from "./styles.js"
-import { Header } from '../../components/Header'
-
+import { Header } from "../../components/Header"
+import { ButtonText } from "../../components/ButtonText"
+import { Input } from "../../components/Input"
+import { Section } from "../../components/Section"
+import { Note } from "../../components/Note"
 
 export function Home() {
   return (
     <Container>
       <Brand>
-      <h1>RocketNotes</h1>
+        <h1>RocketNotes</h1>
       </Brand>
 
-    <Header />
+      <Header />
 
-    <Menu>
+      <Menu>
+        <li>
+          <ButtonText title="Todos" $isactive />{" "}
+        </li>
+        <li>
+          <ButtonText title="React" />{" "}
+        </li>
+        <li>
+          <ButtonText title="Node" />{" "}
+        </li>
+      </Menu>
 
-    </Menu>
+      <Search>
+        <Input placeholder="Pesquisar pelo titulo" icon={FiSearch} />
+      </Search>
 
-    <Search>
-      
-    </Search>
+      <Content>
+        <Section title="Minhas Notas">
+          <Note
+            data={{
+              title: "React",
+              tags: [
+                { id: "1", name: "react" },
+                { id: "2", name: "rocket" },
+              ],
+            }}
+          />
+        </Section>
+      </Content>
 
-    <Content>
-
-    </Content>
-
-    <NewNote>
-
-    </NewNote>
-
+      <NewNote>
+        <FiPlus />
+        Criar Nota
+      </NewNote>
     </Container>
-
   )
 }
