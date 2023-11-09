@@ -7,13 +7,20 @@ import { Section } from "../../components/Section"
 import { Button } from "../../components/Button"
 import { Link } from "react-router-dom"
 import { useState } from "react"
+import { api } from "../../services/api"
+import { useNavigate } from "react-router-dom"
 
 export function New() {
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+
   const [links, setLinks] = useState([])
   const [newLink, setNewLink] = useState("")
 
   const [tags, setTags] = useState([])
   const [newTag, setNewTag] = useState("")
+
+  const navigate = useNavigate()
 
   function handleAddLink() {
     setLinks((prevState) => [...prevState, newLink])
@@ -33,6 +40,18 @@ export function New() {
     setTags((prevState) => prevState.filter((tag) => tag !== deleted))
   }
 
+  async function handleNewNote() {
+    await api.post("/notes", {
+      title,
+      description,
+      tags,
+      links,
+    })
+
+    alert("Nota criada com sucesso!")
+    navigate("/")
+  }
+
   return (
     <Container>
       <Header />
@@ -44,8 +63,14 @@ export function New() {
             <Link to="/">Voltar</Link>
           </header>
 
-          <Input placeholder="Titulo" />
-          <TextArea placeholder="Observações" />
+          <Input
+            placeholder="Titulo"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <TextArea
+            placeholder="Observações"
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
           <Section title="Links Úteis">
             {links.map((link, index) => (
@@ -70,9 +95,7 @@ export function New() {
                 <NoteItem
                   key={String(index)}
                   value={tag}
-                  onClick={() => 
-                    handleRemoveTag(tag)
-                  }
+                  onClick={() => handleRemoveTag(tag)}
                 />
               ))}
               <NoteItem
@@ -85,7 +108,7 @@ export function New() {
             </div>
           </Section>
 
-          <Button title="Salvar" />
+          <Button title="Salvar" onClick={handleNewNote} />
         </Form>
       </main>
     </Container>
