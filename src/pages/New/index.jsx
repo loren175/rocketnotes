@@ -5,7 +5,7 @@ import { TextArea } from "../../components/TextArea"
 import { NoteItem } from "../../components/NoteItem"
 import { Section } from "../../components/Section"
 import { Button } from "../../components/Button"
-import { Link } from "react-router-dom"
+import { ButtonText } from "../../components/ButtonText"
 import { useState } from "react"
 import { api } from "../../services/api"
 import { useNavigate } from "react-router-dom"
@@ -21,6 +21,10 @@ export function New() {
   const [newTag, setNewTag] = useState("")
 
   const navigate = useNavigate()
+
+  function handleBack() {
+    navigate(-1)
+  }
 
   function handleAddLink() {
     setLinks((prevState) => [...prevState, newLink])
@@ -41,21 +45,22 @@ export function New() {
   }
 
   async function handleNewNote() {
-    if(!title) {
+    if (!title) {
       return alert("Digite um título.")
     }
-    
+
     if (newLink) {
       return alert(
         "Você deixou um link no campo, porém não clicou em adicionar."
       )
     }
-    
-    if(newTag){
-      return alert("Você deixou uma tag no campo, porém não clicou em adicionar.")
+
+    if (newTag) {
+      return alert(
+        "Você deixou uma tag no campo, porém não clicou em adicionar."
+      )
     }
 
-    
     await api.post("/notes", {
       title,
       description,
@@ -64,7 +69,7 @@ export function New() {
     })
 
     alert("Nota criada com sucesso!")
-    navigate("/")
+    navigate(-1)
   }
 
   return (
@@ -75,7 +80,7 @@ export function New() {
         <Form>
           <header>
             <h1>Criar Nota</h1>
-            <Link to="/">Voltar</Link>
+            <ButtonText title="Voltar" onClick={handleBack} />
           </header>
 
           <Input
